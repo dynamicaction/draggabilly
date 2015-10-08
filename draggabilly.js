@@ -1336,7 +1336,7 @@
       this.dragPoint.y = dragY;
 
       if (!this.isDragging) {
-        if ( Math.abs(gridX) > 3 || Math.abs(gridY) > 3 ) {
+        if ( Math.abs(dragX) > 3 || Math.abs(dragY) > 3 ) {
           // reset isDragging flag
           this.isDragging = true;
           this.emitEvent( 'dragStart', [ this, event, pointer ] );
