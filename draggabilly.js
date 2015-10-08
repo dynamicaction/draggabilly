@@ -1166,7 +1166,7 @@
 
     Draggabilly.prototype.ontouchstart = function( event ) {
       // disregard additional touches
-      if ( this.isDragging ) {
+      if ( this.isDragging && this.isAnimate) {
         return;
       }
 
@@ -1225,11 +1225,10 @@
 
       classie.add( this.element, 'is-dragging' );
 
-      // reset isDragging flag
-      this.isDragging = true;
 
-      this.emitEvent( 'dragStart', [ this, event, pointer ] );
-
+      // reset isAnimate flag
+      this.isAnimate = true;
+ 
       // start animation
       this.animate();
     };
@@ -1336,6 +1335,16 @@
       this.dragPoint.x = dragX;
       this.dragPoint.y = dragY;
 
+      if (!this.isDragging) {
+        if ( Math.abs(gridX) > 3 || Math.abs(gridY) > 3 ) {
+          // reset isDragging flag
+          this.isDragging = true;
+          this.emitEvent( 'dragStart', [ this, event, pointer ] );
+        } else {
+          return;
+        }
+      }
+
       this.emitEvent( 'dragMove', [ this, event, pointer ] );
     };
 
@@ -1365,6 +1374,7 @@
      */
     Draggabilly.prototype.dragEnd = function( event, pointer ) {
       this.isDragging = false;
+      this.isAnimate = false;
 
       delete this.pointerIdentifier;
 
@@ -1395,7 +1405,7 @@
 
     Draggabilly.prototype.animate = function() {
       // only render and animate if dragging
-      if ( !this.isDragging ) {
+      if ( !this.isDragging && !this.isAnimate) {
         return;
       }
 
@@ -1435,7 +1445,7 @@
 
     Draggabilly.prototype.disable = function() {
       this.isEnabled = false;
-      if ( this.isDragging ) {
+      if ( this.isDragging && this.isAnimate ) {
         this.dragEnd();
       }
     };
