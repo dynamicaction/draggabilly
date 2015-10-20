@@ -1107,7 +1107,7 @@
       } catch (error) {
         x = parseInt(style.left, 10);
         y = parseInt(style.top, 10);
-      });
+      };
 
       // clean up 'auto' or other non-integer values
       this.position.x = isNaN( x ) ? 0 : x;
